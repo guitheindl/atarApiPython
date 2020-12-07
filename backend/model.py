@@ -7,9 +7,6 @@ class Moto(db.Model):
     cilindradas = db.Column(db.String(254))
     motor = db.Column(db.String(254))
 
-    oficina = db.relationship("Oficina", back_populates="moto")
-
-
     def __str__(self):
         return f"{self.id}. {self.modelo}; {self.cilindradas}; {self.motor}"
 
@@ -27,9 +24,6 @@ class Mecanico(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String(254))
     cargo = db.Column(db.String(254))
-
-    oficina = db.relationship("Oficina", back_populates="mecanico")
-
 
     def __str__(self):
         return f"{self.id}. {self.nome}; {self.cargo}"
@@ -49,10 +43,10 @@ class Oficina(db.Model):
     endereco = db.Column(db.String(254))
 
     mecanico_id = db.Column(db.Integer, db.ForeignKey(Mecanico.id), nullable=False)
-    mecanico = db.relationship("Mecanico", back_populates="oficina")
+    mecanico = db.relationship("Mecanico")
 
     moto_id = db.Column(db.Integer, db.ForeignKey(Moto.id), nullable=False)
-    moto = db.relationship("Moto", back_populates="oficina")
+    moto = db.relationship("Moto")
 
 
     def __str__(self):
@@ -65,9 +59,9 @@ class Oficina(db.Model):
             "nome": self.nome,
             "endereco": self.endereco,
             "mecanico_id": self.mecanico_id,
-            "mecanico": self.mecanico,
+            "mecanico": self.mecanico.json(),
             "moto_id": self.moto_id,
-            "moto": self.moto
+            "moto": self.moto.json()
         }
 
 

@@ -13,7 +13,7 @@ $(function() {
 
         function listarMotos(motos) {
             $("#corpoTabelaMotos").empty();
-            mostrarConteudo("tabelaMotos")
+            mostrarConteudo("motos")
             for (moto of motos) { 
                 novaLinha = `<tr id="linha_${moto.id}"> 
                             <td>${moto.modelo}</td> 
@@ -27,14 +27,77 @@ $(function() {
         }
     }
 
+    function exibir_mecanicos() {
+        $.ajax({
+            url: 'http://localhost:5000/listar_mecanicos',
+            method: 'GET',
+            dataType: 'json', 
+            success: listarMecanicos, 
+            error: function() {
+                alert(" E R R O ");
+            }
+        });
+
+        function listarMecanicos(mecanicos) {
+            $("#corpoTabelaMecanicos").empty();
+            mostrarConteudo("mecanicos")
+            for (mecanico of mecanicos) { 
+                novaLinha = `<tr id="linha_${mecanico.id}"> 
+                            <td>${mecanico.nome}</td> 
+                            <td>${mecanico.cargo}</td> 
+                          </tr>`;
+                $('#tabelaMecanicos').append(novaLinha); 
+            }
+        }
+    }
+
+    function exibir_oficinas() {
+        $.ajax({
+            url: 'http://localhost:5000/listar_oficinas',
+            method: 'GET',
+            dataType: 'json', 
+            success: listarOficinas, 
+            error: function() {
+                alert(" E R R O ");
+            }
+        });
+
+        function listarOficinas(oficinas) {
+            $("#corpoTabelaOficinas").empty();
+            mostrarConteudo("oficinas")
+            for (oficina of oficinas) { 
+                novaLinha = `<tr id="linha_${oficina.id}"> 
+                            <td>${oficina.nome}</td> 
+                            <td>${oficina.endereco}</td> 
+                            <td>${oficina.moto.modelo}</td> 
+                            <td>${oficina.moto.cilindradas}</td> 
+                            <td>${oficina.moto.motor}</td> 
+                            <td>${oficina.mecanico.nome}</td> 
+                            <td>${oficina.mecanico.cargo}</td> 
+                          </tr>`;
+                $('#tabelaOficinas').append(novaLinha); 
+            }
+        }
+    }
+
     function mostrarConteudo(identificador) {
-        $("#tabelaMotos").addClass('invisible');
-        $("#conteudoInicial").addClass('invisible');
-        $("#"+identificador).removeClass('invisible');      
+        $("#motos").addClass('d-none');
+        $("#mecanicos").addClass('d-none');
+        $("#oficinas").addClass('d-none');
+        $("#conteudoInicial").addClass('d-none');
+        $("#"+identificador).removeClass('d-none');      
     }
 
     $(document).on("click", "#linkListarMotos", function() {
         exibir_motos();
+    });
+
+    $(document).on("click", "#linkListarMecanicos", function() {
+        exibir_mecanicos();
+    });
+
+    $(document).on("click", "#linkListarOficinas", function() {
+        exibir_oficinas();
     });
     
     $(document).on("click", "#linkInicio", function() {

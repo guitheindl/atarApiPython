@@ -15,17 +15,28 @@
     <div class="container">
 
         <nav class="navbar navbar-expand-lg navbar-light bg-light mt-2">
+            <span class="navbar-text">Cadastro de Motos</span>
 
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <div class="navbar-nav mr-auto">
-                    <span class="navbar-text">Cadastro de Motos</span>
-                    <a class="nav-item nav-link" href="#" id="linkInicio">Início
-                        <span class="sr-only">(current)</span></a>
-                    <a class="nav-item nav-link" href="#" id="linkListarMotos">Listar</a>
-                    <a class="nav-item nav-link" data-toggle="modal" 
-                        data-target="#modalIncluirMoto" href="#">Incluir</a>
-                </div>
-            </div>
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="#" id="linkInicio">Início</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownRegistros"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                    >
+                        Registros
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownRegistros">
+                        <a class="dropdown-item" href="#" id="linkListarMotos">Motos</a>
+                        <a class="dropdown-item" href="#" id="linkListarMecanicos">Mecanicos</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" id="linkListarOficinas">Oficinas</a>
+                </li>
+            </ul>
+
 
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -36,7 +47,7 @@
 
         <div id="corpoDaPagina">
 
-            <div id="conteudoInicial" class="invisible">
+            <div id="conteudoInicial">
                 Bem vindo ao cadastro de motos.
             </div>
 
@@ -82,23 +93,54 @@
                 </div>
             </div>
 
-            <!-- tabela de listagem de motos -->
-            <table class="table invisible table-striped table-hover" id="tabelaMotos">
-                <thead>
-                    <!-- primeira linha da tabela: títulos -->
-                    <tr>
-                        <th scope="col">Modelo</th>
-                        <th scope="col">Cilindradas</th>
-                        <th scope="col">Motor</th>
-                        <th scope="col">Operação</th>
-                    </tr>
-                </thead>
-                <tbody id="corpoTabelaMotos">
-                    <!-- aqui serão exibidas as motos -->
-                </tbody>
-            </table>
+            <div class="container" id="motos">
+                <table class="table table-striped table-hover" id="tabelaMotos">
+                    <thead>
+                        <tr>
+                            <th scope="col">Modelo</th>
+                            <th scope="col">Cilindradas</th>
+                            <th scope="col">Motor</th>
+                            <th scope="col">Operação</th>
+                        </tr>
+                    </thead>
+                    <tbody id="corpoTabelaMotos">
+                    </tbody>
+                    <a class="nav-item nav-link" data-toggle="modal" 
+                    data-target="#modalIncluirMoto" href="#">Incluir</a>
+                </table>
+            </div> 
 
-        </div> <!-- fim da div corpo da página -->
+            <div class="container" id="mecanicos">
+                <table class="table table-striped table-hover" id="tabelaMecanicos">
+                    <thead>
+                        <tr>
+                            <th scope="col">Nome</th>
+                            <th scope="col">Cargo</th>
+                        </tr>
+                    </thead>
+                    <tbody id="corpoTabelaMecanicos">
+                    </tbody>
+                </table>
+            </div> 
+
+            <div class="container" id="oficinas">
+                <table class="table table-striped table-hover" id="tabelaOficinas">
+                    <thead>
+                        <tr>
+                            <th scope="col">Nome</th>
+                            <th scope="col">Endereco</th>
+                            <th scope="col">Modelo da Moto</th>
+                            <th scope="col">Cilindradas da Moto</th>
+                            <th scope="col">Motor da Moto</th>
+                            <th scope="col">Mecanico</th>
+                            <th scope="col">Cargo</th>
+                        </tr>
+                    </thead>
+                    <tbody id="corpoTabelaMotos">
+                    </tbody>
+                </table>
+            </div> 
+
     </div>
 
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

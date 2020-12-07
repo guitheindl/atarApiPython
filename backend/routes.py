@@ -1,5 +1,5 @@
 from config import *
-from model import Moto
+from model import Moto, Mecanico, Oficina
 
 @app.route("/")
 def inicio():
@@ -40,4 +40,20 @@ def excluir_moto(id_moto):
         resposta = jsonify({"resultado": "erro", "detalhes": str(e)})
         
     resposta.headers.add("Access-Control-Allow-Origin", "*") 
+    return resposta
+
+@app.route("/listar_mecanicos")
+def listar_mecanicos():
+    mecanicos = db.session.query(Mecanico).all()
+    mecanicos_em_json = [ mecanico.json() for mecanico in mecanicos ]
+    resposta = jsonify(mecanicos_em_json)
+    resposta.headers.add("Access-Control-Allow-Origin", "*")
+    return resposta
+
+@app.route("/listar_oficinas")
+def listar_oficinas():
+    oficinas = db.session.query(Oficina).all()
+    oficinas_em_json = [ oficina.json() for oficina in oficinas ]
+    resposta = jsonify(oficinas_em_json)
+    resposta.headers.add("Access-Control-Allow-Origin", "*")
     return resposta
