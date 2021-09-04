@@ -12,8 +12,8 @@ $(function() {
         });
 
         function listarUsers(users) {
-            $("#corpoTabelaMotos").empty();
-            mostrarConteudo("motos")
+            $("#corpoTabelausuarios").empty();
+            mostrarConteudo("usuarios")
             for (user of users) { 
                 novaLinha = `<tr id="linha_${user.id}"> 
                             <td>${user.name}</td> 
@@ -22,13 +22,13 @@ $(function() {
                             <td><a href=# id="${user.id}" class="excluirUsuario">
                             <p class="badge badge-danger">Excluir</p> </a> </td>
                           </tr>`;
-                $('#tabelaMotos').append(novaLinha); 
+                $('#tabelausuarios').append(novaLinha); 
             }
         }
     }
 
     function mostrarConteudo(identificador) {
-        $("#motos").addClass('d-none');
+        $("#usuarios").addClass('d-none');
         $("#mecanicos").addClass('d-none');
         $("#oficinas").addClass('d-none');
         $("#conteudoInicial").addClass('d-none');
@@ -70,6 +70,7 @@ $(function() {
                 $("#campoEmail").val(''), 
                 $("#campoTelefone").val(''), 
                 $("#campoDtNascimento").val('')
+                $('#modalIncluirUsuario').modal('hide')
             } else {
                 alert(retorno.resultado + ":" + retorno.detalhes);
             }            
@@ -80,7 +81,7 @@ $(function() {
     });
 
     $('#modalIncluirUsuario').on('hide.bs.modal', function (e) {
-        if (! $("#tabelaMotos").hasClass('invisible')) {
+        if (! $("#tabelausuarios").hasClass('invisible')) {
             mostrarUsuarios();
         }
     });
