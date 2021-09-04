@@ -1,81 +1,28 @@
 $(function() { 
     
-    function exibir_motos() {
+    function mostrarUsuarios() {
         $.ajax({
-            url: 'http://localhost:5000/listar_motos',
+            url: 'http://localhost:5000/listar_users',
             method: 'GET',
             dataType: 'json', 
-            success: listarMotos, 
+            success: listarUsers, 
             error: function() {
                 alert(" E R R O ");
             }
         });
 
-        function listarMotos(motos) {
+        function listarUsers(users) {
             $("#corpoTabelaMotos").empty();
             mostrarConteudo("motos")
-            for (moto of motos) { 
-                novaLinha = `<tr id="linha_${moto.id}"> 
-                            <td>${moto.modelo}</td> 
-                            <td>${moto.cilindradas}</td> 
-                            <td>${moto.motor}</td> 
-                            <td><a href=# id="${moto.id}" class="excluir_moto">
+            for (user of users) { 
+                novaLinha = `<tr id="linha_${user.id}"> 
+                            <td>${user.name}</td> 
+                            <td>${user.cpf}</td>
+                            <td>${user.email}</td> 
+                            <td><a href=# id="${user.id}" class="excluirUsuario">
                             <p class="badge badge-danger">Excluir</p> </a> </td>
                           </tr>`;
                 $('#tabelaMotos').append(novaLinha); 
-            }
-        }
-    }
-
-    function exibir_mecanicos() {
-        $.ajax({
-            url: 'http://localhost:5000/listar_mecanicos',
-            method: 'GET',
-            dataType: 'json', 
-            success: listarMecanicos, 
-            error: function() {
-                alert(" E R R O ");
-            }
-        });
-
-        function listarMecanicos(mecanicos) {
-            $("#corpoTabelaMecanicos").empty();
-            mostrarConteudo("mecanicos")
-            for (mecanico of mecanicos) { 
-                novaLinha = `<tr id="linha_${mecanico.id}"> 
-                            <td>${mecanico.nome}</td> 
-                            <td>${mecanico.cargo}</td> 
-                          </tr>`;
-                $('#tabelaMecanicos').append(novaLinha); 
-            }
-        }
-    }
-
-    function exibir_oficinas() {
-        $.ajax({
-            url: 'http://localhost:5000/listar_oficinas',
-            method: 'GET',
-            dataType: 'json', 
-            success: listarOficinas, 
-            error: function() {
-                alert(" E R R O ");
-            }
-        });
-
-        function listarOficinas(oficinas) {
-            $("#corpoTabelaOficinas").empty();
-            mostrarConteudo("oficinas")
-            for (oficina of oficinas) { 
-                novaLinha = `<tr id="linha_${oficina.id}"> 
-                            <td>${oficina.nome}</td> 
-                            <td>${oficina.endereco}</td> 
-                            <td>${oficina.moto.modelo}</td> 
-                            <td>${oficina.moto.cilindradas}</td> 
-                            <td>${oficina.moto.motor}</td> 
-                            <td>${oficina.mecanico.nome}</td> 
-                            <td>${oficina.mecanico.cargo}</td> 
-                          </tr>`;
-                $('#tabelaOficinas').append(novaLinha); 
             }
         }
     }
@@ -88,42 +35,41 @@ $(function() {
         $("#"+identificador).removeClass('d-none');      
     }
 
-    $(document).on("click", "#linkListarMotos", function() {
-        exibir_motos();
-    });
-
-    $(document).on("click", "#linkListarMecanicos", function() {
-        exibir_mecanicos();
-    });
-
-    $(document).on("click", "#linkListarOficinas", function() {
-        exibir_oficinas();
+    $(document).on("click", "#linkListarUsuarios", function() {
+        mostrarUsuarios();
     });
     
     $(document).on("click", "#linkInicio", function() {
         mostrarConteudo("conteudoInicial");
     });
 
-    $(document).on("click", "#btIncluirMoto", function() {
-        modelo = $("#campoModelo").val();
-        cilindradas = $("#campoCilindradas").val();
-        motor = $("#campoMotor").val();
-        var dados = JSON.stringify({ modelo: modelo, cilindradas: cilindradas, motor: motor });
+    $(document).on("click", "#btIncluirUsuario", function() {
+        var dados = JSON.stringify({ 
+            name: $("#campoNome").val(), 
+            lastname: $("#campoSobrenome").val(), 
+            cpf: $("#campoCPF").val(), 
+            email: $("#campoEmail").val(), 
+            fone: $("#campoTelefone").val(), 
+            dtNasc: $("#campoDtNascimento").val()
+        });
         $.ajax({
-            url: 'http://localhost:5000/incluir_moto',
+            url: 'http://localhost:5000/incluir_user',
             type: 'POST',
             dataType: 'json', 
             contentType: 'application/json',
             data: dados, 
-            success: motoIncluida, 
+            success: usuarioIncluso, 
             error: erroAoIncluir
         });
-        function motoIncluida (retorno) {
+        function usuarioIncluso (retorno) {
             if (retorno.resultado == "ok") {
-                alert("moto incluída com sucesso!");
-                $("#campoModelo").val("");
-                $("#campoCilindradas").val("");
-                $("#campoMotor").val("");
+                alert("Usuário incluído com sucesso!");
+                $("#campoNome").val(''), 
+                $("#campoSobrenome").val(''), 
+                $("#campoCPF").val(''), 
+                $("#campoEmail").val(''), 
+                $("#campoTelefone").val(''), 
+                $("#campoDtNascimento").val('')
             } else {
                 alert(retorno.resultado + ":" + retorno.detalhes);
             }            
@@ -133,27 +79,27 @@ $(function() {
         }
     });
 
-    $('#modalIncluirMoto').on('hide.bs.modal', function (e) {
+    $('#modalIncluirUsuario').on('hide.bs.modal', function (e) {
         if (! $("#tabelaMotos").hasClass('invisible')) {
-            exibir_motos();
+            mostrarUsuarios();
         }
     });
 
-    $(document).on("click", ".excluir_moto", function() {
-        var idMoto = $(this).attr("id");
+    $(document).on("click", ".excluirUsuario", function() {
+        var idUsuario = $(this).attr("id");
     
         $.ajax({
-          url: `http://localhost:5000/excluir_moto/${idMoto}`,
+          url: `http://localhost:5000/excluir_user/${idUsuario}`,
           type: "DELETE",
           dataType: 'json',
-          success: excluirMoto,
+          success: excluirUsuario,
           error: erroAoExcluir
         });
     
-        function excluirMoto(retorno) {
+        function excluirUsuario(retorno) {
           if (retorno.resultado === "ok") {
-            $(`#linha_${idMoto}`).fadeOut(1000, () => {
-                alert("Moto excluída com sucesso!")
+            $(`#linha_${idUsuario}`).fadeOut(1000, () => {
+                alert("Usuário excluído com sucesso!")
             });
           } else {
             alert(`ERRO: ${retorno.resultado}: ${retorno.detalhes}`);
@@ -164,7 +110,8 @@ $(function() {
           alert("Error: Search on back-end");
         }
       });
-    
 
     mostrarConteudo("conteudoInicial");
+
+    mostrarUsuarios();
 });
